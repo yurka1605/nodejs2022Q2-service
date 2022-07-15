@@ -9,17 +9,23 @@ import { UserEntity } from './entities/user.entity';
 export class UsersService {
   constructor(private db: InMemoryDBService) { }
 
-  create(createUserDto: CreateUserDto) {
-    const user = new UserEntity(createUserDto);
-    return this.db.add<UserEntity>([DataBaseEntity.USERS], user);
+  create(createUserDto: CreateUserDto): UserEntity {
+    return this.db.add<UserEntity>(
+      [DataBaseEntity.USERS],
+      new UserEntity(createUserDto)
+    );
   }
 
   findAll(): UserEntity[] {
-    return Object.values(this.db.get<{ [key: string]: UserEntity }>([DataBaseEntity.USERS]));
+    return Object.values(
+      this.db.get<{ [key: string]: UserEntity }>([DataBaseEntity.USERS])
+    );
   }
 
-  findOne(id: string): UserEntity | null {
-    return this.db.get([DataBaseEntity.USERS, id]);
+  findOne(id: string): UserEntity {
+    const user = this.db.get<UserEntity>([DataBaseEntity.USERS, id]);
+    if (!user) throw new NotFoundException();
+    return user;
   }
 
   update(id: string, updateUserDto: UpdateUserDto): UserEntity {
@@ -42,6 +48,8 @@ export class UsersService {
   }
 
   remove(id: string): UserEntity {
-    return this.db.delete<UserEntity>([DataBaseEntity.USERS], id);
+    const deletedUser = this.db.delete<UserEntity>([DataBaseEntity.USERS], id);
+    if (!deletedUser) throw new NotFoundException();
+    return deletedUser;
   }
 }

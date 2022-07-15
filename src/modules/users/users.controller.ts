@@ -10,7 +10,6 @@ import {
   HttpCode,
   HttpStatus,
   ParseUUIDPipe,
-  NotFoundException,
   ClassSerializerInterceptor,
   UseInterceptors,
 } from '@nestjs/common';
@@ -36,15 +35,13 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id', new ParseUUIDPipe()) id: string): UserEntity {
-    const user = this.usersService.findOne(id);
-    if (!user) throw new NotFoundException();
-    return user;
+    return this.usersService.findOne(id);
   }
 
   @Put(':id')
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() updateUserDto: UpdateUserDto
+    @Body() updateUserDto: UpdateUserDto,
   ): UserEntity {
     return this.usersService.update(id, updateUserDto);
   }
@@ -52,9 +49,7 @@ export class UsersController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id', new ParseUUIDPipe()) id: string): UserEntity {
-    const user = this.usersService.remove(id);
-    if (!user) throw new NotFoundException();
-    return;
+    return this.usersService.remove(id);
   }
 }
 
