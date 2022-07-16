@@ -1,10 +1,10 @@
-import { AlbumEntity } from 'src/album/entities/album.entity';
 import { FavsEntity } from './entities/fav.entity';
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InMemoryDBService } from 'src/in-memory-db';
 import { DataBaseEntity } from 'src/constants';
 import { ArtistEntity } from 'src/modules/artist/entities/artist.entity';
-import { TrackEntity } from 'src/track/entities/track.entity';
+import { AlbumEntity } from '../album/entities/album.entity';
+import { TrackEntity } from '../track/entities/track.entity';
 
 interface Dictionary {
   [key: string]: string
