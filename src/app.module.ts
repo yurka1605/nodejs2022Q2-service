@@ -18,4 +18,4 @@ import { FavsModule } from './modules/favs/favs.module';
   ],
   providers: [InMemoryDBService],
 })
-export class AppModule { }
+export class AppModule {}

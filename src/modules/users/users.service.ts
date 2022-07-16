@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { DataBaseEntity } from 'src/constants';
 import { InMemoryDBService } from 'src/in-memory-db';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -7,18 +11,18 @@ import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(private db: InMemoryDBService) { }
+  constructor(private db: InMemoryDBService) {}
 
   create(createUserDto: CreateUserDto): UserEntity {
     return this.db.add<UserEntity>(
       [DataBaseEntity.USERS],
-      new UserEntity(createUserDto)
+      new UserEntity(createUserDto),
     );
   }
 
   findAll(): UserEntity[] {
     return Object.values(
-      this.db.get<{ [key: string]: UserEntity }>([DataBaseEntity.USERS])
+      this.db.get<{ [key: string]: UserEntity }>([DataBaseEntity.USERS]),
     );
   }
 
@@ -37,14 +41,11 @@ export class UsersService {
       throw new ForbiddenException();
     }
 
-    return this.db.update<UserEntity>(
-      [DataBaseEntity.USERS, id],
-      {
-        password: updateUserDto.newPassword,
-        version: user.version + 1,
-        updatedAt: Date.now(),
-      }
-    );
+    return this.db.update<UserEntity>([DataBaseEntity.USERS, id], {
+      password: updateUserDto.newPassword,
+      version: user.version + 1,
+      updatedAt: Date.now(),
+    });
   }
 
   remove(id: string): UserEntity {

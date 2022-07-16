@@ -4,7 +4,7 @@ export enum DataBaseEntity {
   ALBUMS = 'albums',
   TRACKS = 'tracks',
   FAVOURITES = 'favorites',
-};
+}
 
 export const initialDataBase = {
   [DataBaseEntity.ARTISTS]: {},
@@ -16,4 +16,4 @@ export const initialDataBase = {
     [DataBaseEntity.ALBUMS]: {},
     [DataBaseEntity.TRACKS]: {},
   },
-}
+};

@@ -8,13 +8,12 @@ import { TrackEntity } from './entities/track.entity';
 
 @Injectable()
 export class TrackService extends EntityService<TrackEntity> {
-  private linkedTables: string[] = [DataBaseEntity.ALBUMS, DataBaseEntity.ARTISTS];
+  private linkedTables: string[] = [
+    DataBaseEntity.ALBUMS,
+    DataBaseEntity.ARTISTS,
+  ];
   constructor(protected db: InMemoryDBService) {
-    super(
-      db,
-      DataBaseEntity.TRACKS,
-      TrackEntity,
-    );
+    super(db, DataBaseEntity.TRACKS, TrackEntity);
   }
 
   override create(createTrackDto: CreateTrackDto): TrackEntity {

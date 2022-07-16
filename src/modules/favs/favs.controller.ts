@@ -7,16 +7,14 @@ import {
   Post,
   HttpCode,
   HttpStatus,
-  ParseUUIDPipe
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { FavsService } from './favs.service';
 import { DataBaseEntity } from 'src/constants';
 
 @Controller('favs')
 export class FavsController {
-  constructor(
-    private readonly favsService: FavsService,
-  ) { }
+  constructor(private readonly favsService: FavsService) {}
 
   @Get()
   findAll(): FavsEntity {

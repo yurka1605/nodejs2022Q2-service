@@ -14,7 +14,7 @@ export class AlbumService extends EntityService<AlbumEntity> {
       DataBaseEntity.ALBUMS,
       AlbumEntity,
       [DataBaseEntity.TRACKS],
-      'albumId'
+      'albumId',
     );
   }
 

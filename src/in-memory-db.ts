@@ -1,11 +1,11 @@
-import { Injectable } from "@nestjs/common";
-import { initialDataBase } from "./constants";
+import { Injectable } from '@nestjs/common';
+import { initialDataBase } from './constants';
 
 export type baseDataType = { id: string };
 
 interface ICollection<T> {
-  [key: string]: T,
-};
+  [key: string]: T;
+}
 
 export interface IDbState {
   [key: string]: ICollection<any>;
@@ -25,7 +25,10 @@ export class InMemoryDBService {
     return collection[obj.id];
   }
 
-  public update<T extends baseDataType>(keys: string[], obj: Partial<T>): null | T {
+  public update<T extends baseDataType>(
+    keys: string[],
+    obj: Partial<T>,
+  ): null | T {
     const updatedObj = this.get<T>(keys);
 
     if (!updatedObj) {
@@ -33,7 +36,7 @@ export class InMemoryDBService {
     }
 
     Object.entries(obj).forEach(
-      ([key, value]: [string, keyof Partial<T>]) => updatedObj[key] = value
+      ([key, value]: [string, keyof Partial<T>]) => (updatedObj[key] = value),
     );
     return updatedObj;
   }

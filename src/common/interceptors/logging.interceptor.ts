@@ -19,11 +19,11 @@ export class LoggingInterceptor implements NestInterceptor {
     const startDate = Date.now();
     const req = ctx.switchToHttp().getRequest();
 
-    return next
-      .handle()
-      .pipe(tap(() => {
+    return next.handle().pipe(
+      tap(() => {
         const duration = Date.now() - startDate;
         this.logger.log(`${req.method.toUpperCase()} ${req.url} ${duration}ms`);
-      }));
+      }),
+    );
   }
 }

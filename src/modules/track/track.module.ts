@@ -5,6 +5,6 @@ import { InMemoryDBService } from 'src/in-memory-db';
 
 @Module({
   controllers: [TrackController],
-  providers: [TrackService, InMemoryDBService]
+  providers: [TrackService, InMemoryDBService],
 })
-export class TrackModule { }
+export class TrackModule {}

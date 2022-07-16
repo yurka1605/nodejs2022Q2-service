@@ -17,7 +17,7 @@ import { UpdateArtistDto } from './dto/update-artist.dto';
 
 @Controller('artist')
 export class ArtistController {
-  constructor(private readonly artistService: ArtistService) { }
+  constructor(private readonly artistService: ArtistService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -38,7 +38,7 @@ export class ArtistController {
   @Put(':id')
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() updateArtistDto: UpdateArtistDto
+    @Body() updateArtistDto: UpdateArtistDto,
   ): ArtistEntity {
     return this.artistService.update(id, updateArtistDto);
   }

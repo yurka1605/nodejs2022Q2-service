@@ -17,7 +17,7 @@ import { AlbumEntity } from './entities/album.entity';
 
 @Controller('album')
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService) { }
+  constructor(private readonly albumService: AlbumService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -38,7 +38,7 @@ export class AlbumController {
   @Put(':id')
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() updateAlbumDto: UpdateAlbumDto
+    @Body() updateAlbumDto: UpdateAlbumDto,
   ): AlbumEntity {
     return this.albumService.update(id, updateAlbumDto);
   }

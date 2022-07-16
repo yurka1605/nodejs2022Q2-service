@@ -5,6 +5,6 @@ import { InMemoryDBService } from 'src/in-memory-db';
 
 @Module({
   controllers: [AlbumController],
-  providers: [AlbumService, InMemoryDBService]
+  providers: [AlbumService, InMemoryDBService],
 })
-export class AlbumModule { }
+export class AlbumModule {}

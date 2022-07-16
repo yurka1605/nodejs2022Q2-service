@@ -12,7 +12,7 @@ export class ArtistService extends EntityService<ArtistEntity> {
       DataBaseEntity.ARTISTS,
       ArtistEntity,
       [DataBaseEntity.ALBUMS, DataBaseEntity.TRACKS],
-      'artistId'
+      'artistId',
     );
   }
 }

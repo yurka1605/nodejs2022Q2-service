@@ -9,4 +9,4 @@ import { TransformInterceptor } from './interceptors/transform.interceptor';
     { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
   ],
 })
-export class CoreModule { }
+export class CoreModule {}

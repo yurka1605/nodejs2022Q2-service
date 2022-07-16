@@ -4,7 +4,7 @@ import { InMemoryDBService } from 'src/in-memory-db';
 import { DataBaseEntity } from 'src/constants';
 
 interface EntityConstructor<T> {
-  new(entity: Partial<T>): T;
+  new (entity: Partial<T>): T;
 }
 
 export abstract class EntityService<T extends baseDataType> {
@@ -29,7 +29,10 @@ export abstract class EntityService<T extends baseDataType> {
   }
 
   create(createDto: Partial<T>): T {
-    return this.db.add<T>([this.dbTableName], new this.EntityConstructor(createDto));
+    return this.db.add<T>(
+      [this.dbTableName],
+      new this.EntityConstructor(createDto),
+    );
   }
 
   findAll(): T[] {
@@ -45,10 +48,7 @@ export abstract class EntityService<T extends baseDataType> {
   update(id: string, updateDto: Partial<T>): T {
     const entity = this.findOne(id);
     if (!entity) throw new NotFoundException();
-    return this.db.update<T>(
-      [this.dbTableName, id],
-      updateDto
-    );
+    return this.db.update<T>([this.dbTableName, id], updateDto);
   }
 
   remove(id: string): T {
@@ -56,7 +56,9 @@ export abstract class EntityService<T extends baseDataType> {
     if (!removedEntity) throw new NotFoundException();
 
     if (this.connections.length) {
-      this.connections.forEach(table => this.removeRefer(table, id, this.connectionId));
+      this.connections.forEach((table) =>
+        this.removeRefer(table, id, this.connectionId),
+      );
     }
 
     this.removeEntityFromFavourites(id);
@@ -64,9 +66,7 @@ export abstract class EntityService<T extends baseDataType> {
   }
 
   private removeRefer(tableName: string, id: string, idName: string): void {
-    Object.values(
-      this.db.get([tableName])
-    ).forEach(value => {
+    Object.values(this.db.get([tableName])).forEach((value) => {
       if (value?.[idName] === id) {
         value[idName] = null;
       }
@@ -78,7 +78,7 @@ export abstract class EntityService<T extends baseDataType> {
   }
 
   protected checkRefers<T>(tables: string[], dto: Partial<T>) {
-    tables.forEach(tableName => {
+    tables.forEach((tableName) => {
       const id = dto[`${this.cutLastSymbol(tableName)}Id`];
       if (id) {
         this.checkReferId(id, tableName);
@@ -89,7 +89,7 @@ export abstract class EntityService<T extends baseDataType> {
   private checkReferId(id: string, tableName: string): void {
     if (!this.db.get([tableName, id])) {
       throw new BadRequestException(
-        `${this.cutLastSymbol(tableName)} with id ${id} not exist`
+        `${this.cutLastSymbol(tableName)} with id ${id} not exist`,
       );
     }
   }

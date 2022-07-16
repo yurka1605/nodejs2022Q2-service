@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Param, Delete, HttpStatus, HttpCode, ParseUUIDPipe, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  HttpStatus,
+  HttpCode,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
 import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
@@ -6,7 +17,7 @@ import { TrackEntity } from './entities/track.entity';
 
 @Controller('track')
 export class TrackController {
-  constructor(private readonly trackService: TrackService) { }
+  constructor(private readonly trackService: TrackService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -27,7 +38,7 @@ export class TrackController {
   @Put(':id')
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() updateTrackDto: UpdateTrackDto
+    @Body() updateTrackDto: UpdateTrackDto,
   ): TrackEntity {
     return this.trackService.update(id, updateTrackDto);
   }

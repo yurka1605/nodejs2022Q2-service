@@ -5,6 +5,6 @@ import { InMemoryDBService } from 'src/in-memory-db';
 
 @Module({
   controllers: [FavsController],
-  providers: [FavsService, InMemoryDBService]
+  providers: [FavsService, InMemoryDBService],
 })
-export class FavsModule { }
+export class FavsModule {}
