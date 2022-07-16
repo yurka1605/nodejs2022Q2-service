@@ -3,12 +3,14 @@ import { Module } from '@nestjs/common';
 import { CoreModule } from './common/core.module';
 import { InMemoryDBService } from './in-memory-db';
 import { UsersModule } from './modules/users/users.module';
+import { AlbumModule } from './album/album.module';
 
 @Module({
   imports: [
     CoreModule,
     UsersModule,
     ArtistModule,
+    AlbumModule,
   ],
   providers: [InMemoryDBService],
 })
