@@ -7,7 +7,6 @@ export class CreateTrackDto {
 
   @IsNumber()
   @IsNotEmpty()
-  @IsOptional()
   duration: number;
 
   @IsUUID()
