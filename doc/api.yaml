@@ -65,7 +65,7 @@ components:
       required:
         - id
         - name
-    /TrackEntity:
+    TrackEntity:
       type: object
       properties:
         id:
