@@ -7,12 +7,12 @@ import { ArtistEntity } from './entities/artist.entity';
 @Injectable()
 export class ArtistService extends EntityService<ArtistEntity> {
   constructor(protected db: InMemoryDBService) {
-    super(db, DataBaseEntity.ARTISTS, ArtistEntity);
-  }
-
-  override remove(id: string): ArtistEntity {
-    const removedArtist = super.remove(id);
-    this.removeRefers(id, [DataBaseEntity.ALBUMS, DataBaseEntity.TRACKS], 'artistId');
-    return removedArtist;
+    super(
+      db,
+      DataBaseEntity.ARTISTS,
+      ArtistEntity,
+      [DataBaseEntity.ALBUMS, DataBaseEntity.TRACKS],
+      'artistId'
+    );
   }
 }
