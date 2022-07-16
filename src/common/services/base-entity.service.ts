@@ -51,8 +51,8 @@ export abstract class EntityService<T extends baseDataType> {
   }
 
   remove(id: string): T {
-    const deletedUser = this.db.delete<T>([this.dbTableName], id);
-    if (!deletedUser) throw new NotFoundException();
-    return deletedUser;
+    const deletedEntity = this.db.delete<T>([this.dbTableName], id);
+    if (!deletedEntity) throw new NotFoundException();
+    return deletedEntity;
   }
 }
