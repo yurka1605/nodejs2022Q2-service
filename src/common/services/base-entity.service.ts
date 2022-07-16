@@ -11,15 +11,15 @@ export abstract class EntityService<T extends baseDataType> {
   protected readonly db: InMemoryDBService;
   protected dbTableName: string;
   protected EntityConstructor: EntityConstructor<T>;
-  private connections: string[] = [];
-  private connectionId = '';
+  private connections: string[];
+  private connectionId: string;
 
   constructor(
     db: InMemoryDBService,
     dbTableName: string,
     EntityConstructor: EntityConstructor<T>,
-    connections: string[],
-    connectionId: string,
+    connections: string[] = [],
+    connectionId = '',
   ) {
     this.db = db;
     this.dbTableName = dbTableName;
@@ -54,7 +54,11 @@ export abstract class EntityService<T extends baseDataType> {
   remove(id: string): T {
     const removedEntity = this.db.delete<T>([this.dbTableName], id);
     if (!removedEntity) throw new NotFoundException();
-    this.connections.forEach(table => this.removeRefer(table, id, this.connectionId));
+
+    if (this.connections.length) {
+      this.connections.forEach(table => this.removeRefer(table, id, this.connectionId));
+    }
+
     this.removeEntityFromFavourites(id);
     return removedEntity;
   }
