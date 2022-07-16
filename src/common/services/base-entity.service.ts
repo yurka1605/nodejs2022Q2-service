@@ -1,5 +1,5 @@
 import { baseDataType } from './../../in-memory-db';
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { InMemoryDBService } from 'src/in-memory-db';
 import { DataBaseEntity } from 'src/constants';
 
@@ -75,5 +75,26 @@ export abstract class EntityService<T extends baseDataType> {
 
   private removeEntityFromFavourites(id: string) {
     this.db.delete([DataBaseEntity.FAVOURITES, this.dbTableName], id);
+  }
+
+  protected checkRefers<T>(tables: string[], dto: Partial<T>) {
+    tables.forEach(tableName => {
+      const id = dto[`${this.cutLastSymbol(tableName)}Id`];
+      if (id) {
+        this.checkReferId(id, tableName);
+      }
+    });
+  }
+
+  private checkReferId(id: string, tableName: string): void {
+    if (!this.db.get([tableName, id])) {
+      throw new BadRequestException(
+        `${this.cutLastSymbol(tableName)} with id ${id} not exist`
+      );
+    }
+  }
+
+  private cutLastSymbol(str: string): string {
+    return str.slice(0, str.length - 1);
   }
 }
