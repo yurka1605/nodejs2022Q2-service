@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { initialDataBase } from "./constants";
 
-type baseDataType = { id: string };
+export type baseDataType = { id: string };
 
 interface ICollection<T> {
   [key: string]: T,
@@ -13,7 +13,7 @@ export interface IDbState {
 
 @Injectable()
 export class InMemoryDBService {
-  private db: IDbState = initialDataBase;
+  private readonly db: IDbState = initialDataBase;
 
   public get<T>(keys: string[]): T | null {
     return <T>keys.reduce((obj: any, key: string) => obj[key], this.db);
