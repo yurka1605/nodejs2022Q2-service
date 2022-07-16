@@ -55,4 +55,18 @@ export abstract class EntityService<T extends baseDataType> {
     if (!deletedEntity) throw new NotFoundException();
     return deletedEntity;
   }
+
+  protected removeRefers(id: string, dbTableNames: string[], idName: string): void {
+    dbTableNames.forEach(tableName => this.removeRefer(tableName, id, idName));
+  }
+
+  protected removeRefer(tableName: string, id: string, idName: string): void {
+    Object.values(
+      this.db.get([tableName])
+    ).forEach(value => {
+      if (value?.[idName] === id) {
+        value[idName] = null;
+      }
+    });
+  }
 }
