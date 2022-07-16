@@ -5,9 +5,9 @@ import { v4 as uuidv4 } from 'uuid';
 export class UserEntity {
   id: string;
   login: string;
-  version: number;
-  createdAt: number;
-  updatedAt: number;
+  version?: number;
+  createdAt?: number;
+  updatedAt?: number;
 
   @Exclude()
   password: string;
