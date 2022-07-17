@@ -1,14 +1,17 @@
 # Home Library Service
-## Instalation
+## Installation
 
 1. Clone repo `git clone {repository URL}`
-2. Instalation deps `npm install`
+2. Installation deps `npm install`
 3. Rename `.env.example` to `.env`
 3. Run server `npm start`
 
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+
+## Postman testing
+
+For testing with postman you can use the collection and environment from `./postman`
 
 ## Testing
 
@@ -38,7 +41,7 @@ To run only specific test suite with authorization
 npm run test:auth -- <path to suite>
 ```
 
-### Auto-fix and format
+## Auto-fix and format
 
 ```
 npm run lint
