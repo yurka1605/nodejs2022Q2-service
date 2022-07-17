@@ -23,8 +23,8 @@ export class FavsController {
 
   @Post('track/:id')
   @HttpCode(HttpStatus.CREATED)
-  addTrackToFavs(@Param('id', new ParseUUIDPipe()) id: string): void {
-    this.favsService.add(DataBaseEntity.TRACKS, id);
+  addTrackToFavs(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.favsService.add(DataBaseEntity.TRACKS, id);
   }
 
   @Delete('track/:id')
@@ -35,8 +35,8 @@ export class FavsController {
 
   @Post('album/:id')
   @HttpCode(HttpStatus.CREATED)
-  addAlbumToFavs(@Param('id', new ParseUUIDPipe()) id: string): void {
-    this.favsService.add(DataBaseEntity.ALBUMS, id);
+  addAlbumToFavs(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.favsService.add(DataBaseEntity.ALBUMS, id);
   }
 
   @Delete('album/:id')
@@ -47,8 +47,8 @@ export class FavsController {
 
   @Post('artist/:id')
   @HttpCode(HttpStatus.CREATED)
-  addArtistToFavs(@Param('id', new ParseUUIDPipe()) id: string): void {
-    this.favsService.add(DataBaseEntity.ARTISTS, id);
+  addArtistToFavs(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.favsService.add(DataBaseEntity.ARTISTS, id);
   }
 
   @Delete('artist/:id')

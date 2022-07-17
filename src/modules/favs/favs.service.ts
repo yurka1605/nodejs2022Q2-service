@@ -35,15 +35,21 @@ export class FavsService {
     };
   }
 
-  add(table: string, id: string): void {
+  add(table: string, id: string): { message: string } {
     if (this.checkEntityExist(table, id)) {
       this.db.add([DataBaseEntity.FAVOURITES, table], { id });
     }
-    return;
+
+    return {
+      message: `${
+        table.charAt(0).toUpperCase() +
+        table.slice(0, table.length - 1).slice(1)
+      } with id ${id} successfully added to favorites`,
+    };
   }
 
-  remove(table: string, id: string) {
-    return this.db.delete([DataBaseEntity.FAVOURITES, table], id);
+  remove(table: string, id: string): void {
+    this.db.delete([DataBaseEntity.FAVOURITES, table], id);
   }
 
   private checkEntityExist(table: string, id: string): any {

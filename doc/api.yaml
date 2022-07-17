@@ -122,7 +122,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserEntity'
-
     post:
       tags:
         - Users
@@ -154,7 +153,6 @@ paths:
                 $ref: '#/components/schemas/UserEntity'
         400:
           description: Bad request. body does not contain required fields
-
   /user/{id}:
     parameters:
       - name: id
@@ -245,6 +243,7 @@ paths:
 
         404:
           description: User not found
+  
   /track:
     get:
       tags:
@@ -296,7 +295,6 @@ paths:
                 $ref: '#/components/schemas/TrackEntity'
         400:
           description: Bad request. body does not contain required fields
-
   /track/{id}:
     parameters:
       - name: id
@@ -398,6 +396,7 @@ paths:
 
         404:
           description: Track was not found.
+  
   /album:
     get:
       tags:
@@ -440,7 +439,7 @@ paths:
                 - year
       responses:
         201:
-          description: Almub is created
+          description: Album is created
           content:
             application/json:
               schema:
@@ -521,6 +520,7 @@ paths:
 
         404:
           description: Album was not found.
+  
   /artist:
     get:
       tags:
@@ -634,6 +634,7 @@ paths:
 
         404:
           description: Artist was not found.
+  
   /favs:
     get:
       tags:
@@ -647,7 +648,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FavsEntity'
-
   /favs/track/{id}:
     parameters:
       - name: id
