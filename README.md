@@ -4,10 +4,22 @@
 1. Clone repo `git clone {repository URL}`
 2. Installation deps `npm install`
 3. Rename `.env.example` to `.env`
-3. Run server `npm start`
 
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+
+## Running
+
+### Default
+- `npm run start:dev` - dev 
+- `npm run start:prod` - prod 
+
+### In Docker container
+- Install Docker
+- Run multi-container - `npm run docker:run` or `docker-compose up -d --remove-orphans`
+- Docker scan image - `npm run docker:scan` or `docker scan iurii1605/rest-service`
+- Docker pull image from hub - `npm run docker:pull` or `docker pull iurii1605/rest-service`
+- Stop multi-container - `npm run docker:stop` or `docker-compose down --remove-orphans`
 
 ## Postman testing
 

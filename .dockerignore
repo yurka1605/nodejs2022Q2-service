@@ -1,0 +1,13 @@
+node_modules/
+postman/
+test/
+.git/
+.idea/
+
+.git
+.gitignore
+.DS_Store
+.dockerignore
+*.md
+npm-debug.log
+Dockerfile
