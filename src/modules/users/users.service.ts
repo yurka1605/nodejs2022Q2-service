@@ -3,53 +3,56 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { PrismaService } from 'src/common/modules/prisma/prisma.service';
 import { DataBaseEntity } from 'src/constants';
 import { InMemoryDBService } from 'src/in-memory-db';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserEntity } from './entities/user.entity';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(private db: InMemoryDBService) {}
+  constructor(private db: InMemoryDBService, private prisma: PrismaService) {}
 
-  create(createUserDto: CreateUserDto): UserEntity {
-    return this.db.add<UserEntity>(
-      [DataBaseEntity.USERS],
-      new UserEntity(createUserDto),
-    );
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    return this.prisma.user.create({ data: new User(createUserDto) });
   }
 
-  findAll(): UserEntity[] {
-    return Object.values(
-      this.db.get<{ [key: string]: UserEntity }>([DataBaseEntity.USERS]),
-    );
+  async findAll(): Promise<User[]> {
+    return this.prisma.user.findMany();
   }
 
-  findOne(id: string): UserEntity {
-    const user = this.db.get<UserEntity>([DataBaseEntity.USERS, id]);
-    if (!user) throw new NotFoundException();
-    return user;
+  async findOne(id: string): Promise<User> {
+    return await this.prisma.user.findUnique({ where: { id } });
   }
 
-  update(id: string, updateUserDto: UpdateUserDto): UserEntity {
-    const user = this.findOne(id);
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    // const password = updateUserDto.oldPassword;
+    // return this.prisma.user.update({
+    //   where: {
+    //     id,
+    //     password
+    //   },
+    //   data: {
+    //     version: {
+    //       increment: 1,
+    //     },
+    //     password: updateUserDto.newPassword,
+    //   },
+    // });
 
-    if (!user) throw new NotFoundException();
+    // if (user.password !== updateUserDto.oldPassword) {
+    //   throw new ForbiddenException();
+    // }
 
-    if (user.password !== updateUserDto.oldPassword) {
-      throw new ForbiddenException();
-    }
-
-    return this.db.update<UserEntity>([DataBaseEntity.USERS, id], {
+    return this.db.update<User>([DataBaseEntity.USERS, id], {
       password: updateUserDto.newPassword,
-      version: user.version + 1,
-      updatedAt: Date.now(),
+      version: 1,
     });
   }
 
-  remove(id: string): UserEntity {
-    const deletedUser = this.db.delete<UserEntity>([DataBaseEntity.USERS], id);
+  remove(id: string): User {
+    const deletedUser = this.db.delete<User>([DataBaseEntity.USERS], id);
     if (!deletedUser) throw new NotFoundException();
     return deletedUser;
   }

@@ -1,25 +1,17 @@
 import { CreateUserDto } from './../dto/create-user.dto';
 import { Exclude } from 'class-transformer';
-import { v4 as uuidv4 } from 'uuid';
 
-export class UserEntity {
+export class User {
   id: string;
   login: string;
-  version?: number;
-  createdAt?: number;
-  updatedAt?: number;
+  version: number;
+  createdAt: Date;
+  updatedAt: Date;
 
   @Exclude()
   password: string;
 
   constructor(partial: CreateUserDto) {
-    const now = Date.now();
-    Object.assign(this, {
-      id: uuidv4(),
-      ...partial,
-      version: 1,
-      createdAt: now,
-      updatedAt: now,
-    });
+    Object.assign(this, { ...partial });
   }
 }

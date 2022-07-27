@@ -1,4 +1,4 @@
-import { UserEntity } from './entities/user.entity';
+import { User } from './entities/user.entity';
 import {
   Controller,
   Get,
@@ -24,31 +24,31 @@ export class UsersController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createUserDto: CreateUserDto): UserEntity {
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
-  findAll(): UserEntity[] {
+  async findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', new ParseUUIDPipe()) id: string): UserEntity {
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<User> {
     return this.usersService.findOne(id);
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateUserDto: UpdateUserDto,
-  ): UserEntity {
+  ): Promise<User> {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', new ParseUUIDPipe()) id: string): UserEntity {
+  remove(@Param('id', new ParseUUIDPipe()) id: string): User {
     return this.usersService.remove(id);
   }
 }

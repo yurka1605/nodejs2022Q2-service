@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.9'
 
 services:
   nestjs:
@@ -15,9 +15,11 @@ services:
       - ./usr/src/app/node_modules
     env_file:
       - .env
-    command: npm run start:dev
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@postgres:${DB_PORT}/${POSTGRES_DB}?schema=public"
     ports:
       - ${PORT}:${PORT}
+    command: npm run start:dev
     depends_on:
       - postgres
 
