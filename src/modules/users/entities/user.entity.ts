@@ -12,6 +12,6 @@ export class User {
   password: string;
 
   constructor(partial: CreateUserDto) {
-    Object.assign(this, { ...partial });
+    Object.assign(this, partial);
   }
 }
