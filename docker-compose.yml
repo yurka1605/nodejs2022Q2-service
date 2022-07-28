@@ -16,7 +16,7 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: "postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@postgres:${DB_PORT}/${POSTGRES_DB}?schema=public"
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${DB_PORT}/${POSTGRES_DB}
     ports:
       - ${PORT}:${PORT}
     command: npm run start:dev
@@ -24,13 +24,12 @@ services:
       - postgres
 
   postgres:
-    container_name: postgres
-    build:
-      dockerfile: Dockerfile.postgresql
-      context: .
-    restart: always
-    env_file:
-      - .env
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
       - api
     ports:
