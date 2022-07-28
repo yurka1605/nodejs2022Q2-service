@@ -1,17 +1,25 @@
-import { CreateUserDto } from './../dto/create-user.dto';
 import { Exclude } from 'class-transformer';
 
 export class User {
   id: string;
   login: string;
   version: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: number;
+  updatedAt: number;
 
   @Exclude()
   password: string;
 
-  constructor(partial: CreateUserDto) {
-    Object.assign(this, partial);
+  constructor({ createdAt, updatedAt, ...partial }: Partial<User>) {
+    let now: number;
+    if (!createdAt) {
+      now = Date.now();
+    }
+
+    Object.assign(this, {
+      ...partial,
+      createdAt: createdAt ?? now,
+      updatedAt: updatedAt ?? now,
+    });
   }
 }

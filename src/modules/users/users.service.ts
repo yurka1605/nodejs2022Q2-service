@@ -11,10 +11,6 @@ export class UsersService {
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {
       return await this.prisma.user.create({ data: new User(createUserDto) });
-      // .then((user: User) => {
-      //   delete user['password'];
-      //   return user;
-      // });
     } catch (e) {
       this.prisma.handleErrors(e);
     }
@@ -49,6 +45,7 @@ export class UsersService {
           version: {
             increment: 1,
           },
+          updatedAt: Date.now(),
           password: updateUserDto.newPassword,
         },
       });
