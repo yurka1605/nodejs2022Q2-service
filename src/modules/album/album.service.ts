@@ -7,6 +7,6 @@ import { Album } from './entities/album.entity';
 @Injectable()
 export class AlbumService extends EntityService<Album> {
   constructor(protected prisma: PrismaService) {
-    super(prisma, DataBaseEntity.ALBUMS, Album);
+    super(prisma, DataBaseEntity.ALBUM, Album);
   }
 }

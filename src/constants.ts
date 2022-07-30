@@ -1,7 +1,7 @@
 export enum DataBaseEntity {
-  USERS = 'users',
+  USER = 'user',
   ARTIST = 'artist',
-  ALBUMS = 'album',
-  TRACKS = 'tracks',
+  ALBUM = 'album',
+  TRACK = 'track',
   FAVOURITES = 'favorites',
 }
