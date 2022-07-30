@@ -13,7 +13,7 @@ import {
 import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { TrackEntity } from './entities/track.entity';
+import { Track } from './entities/track.entity';
 
 @Controller('track')
 export class TrackController {
@@ -21,17 +21,17 @@ export class TrackController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createTrackDto: CreateTrackDto): TrackEntity {
+  create(@Body() createTrackDto: CreateTrackDto): Promise<Track> {
     return this.trackService.create(createTrackDto);
   }
 
   @Get()
-  findAll(): TrackEntity[] {
+  findAll(): Promise<Track[]> {
     return this.trackService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', new ParseUUIDPipe()) id: string): TrackEntity {
+  findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<Track> {
     return this.trackService.findOne(id);
   }
 
@@ -39,7 +39,7 @@ export class TrackController {
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateTrackDto: UpdateTrackDto,
-  ): TrackEntity {
+  ): Promise<Track> {
     return this.trackService.update(id, updateTrackDto);
   }
 
