@@ -1,11 +1,10 @@
-import { baseDataType } from './../../in-memory-db';
 import { PrismaService } from '../modules/prisma/prisma.service';
 
 interface EntityConstructor<T> {
   new (entity: Partial<T>): T;
 }
 
-export abstract class EntityService<T extends baseDataType> {
+export abstract class EntityService<T> {
   protected readonly prisma: PrismaService;
   protected dbTableName: string;
   protected EntityConstructor: EntityConstructor<T>;

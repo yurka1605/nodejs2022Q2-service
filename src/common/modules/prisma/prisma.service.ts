@@ -20,6 +20,12 @@ export class PrismaService extends PrismaClient {
       switch (e.code) {
         case PrismaCodes.NotFound:
           throw new NotFoundException();
+        case PrismaCodes.NotFoundForeignKey:
+          const keyName =
+            (e?.meta?.field_name as string)?.split('_')[1] || null;
+          throw new NotFoundException(
+            `Entity with current ${keyName} doesn't exist`,
+          );
 
         default:
           throw e;

@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl"]
 }
 
@@ -8,18 +8,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id          String @id @default(uuid())
-  login       String @unique
-  version     Int @default(1)
-  createdAt   Int
-  updatedAt   Int
-  password    String
+  id        String @id @default(uuid())
+  login     String @unique
+  version   Int    @default(1)
+  createdAt Int
+  updatedAt Int
+  password  String
 }
 
 model Artist {
-  id          String @id @default(uuid())
-  name        String
-  grammy      Boolean? @default(false)
+  id     String   @id @default(uuid())
+  name   String
+  grammy Boolean? @default(false)
+  albums   Album[]
+}
+
+model Album {
+  id       String @id @default(uuid())
+  name     String
+  year     Int?
+  artist   Artist? @relation(fields: [artistId], references: [id])
+  artistId String?
 }

@@ -1,15 +1,10 @@
-import { v4 as uuidv4 } from 'uuid';
-
-export class AlbumEntity {
+export class Album {
   id: string;
   name: string;
   year?: number;
   artistId?: string | null;
 
-  constructor(partial: Partial<AlbumEntity>) {
-    Object.assign(this, {
-      id: uuidv4(),
-      ...partial,
-    });
+  constructor(partial: Partial<Album>) {
+    Object.assign(this, partial);
   }
 }
