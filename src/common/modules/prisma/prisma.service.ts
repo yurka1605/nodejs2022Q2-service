@@ -1,4 +1,8 @@
 import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
   INestApplication,
   Injectable,
   NotFoundException,
@@ -26,9 +30,13 @@ export class PrismaService extends PrismaClient {
           throw new NotFoundException(
             `Entity with current ${keyName} doesn't exist`,
           );
+      case PrismaCodes.AlreadyExist:
+        throw new BadRequestException(
+          `Entity with this id already exist`,
+        );
 
-        default:
-          throw e;
+      default:
+        throw e;
       }
     }
 

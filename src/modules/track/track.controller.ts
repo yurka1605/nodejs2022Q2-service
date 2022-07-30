@@ -9,38 +9,41 @@ import {
   HttpCode,
   ParseUUIDPipe,
   Put,
+  ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
 import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { Track } from './entities/track.entity';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('track')
 export class TrackController {
   constructor(private readonly trackService: TrackService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createTrackDto: CreateTrackDto): Promise<Track> {
-    return this.trackService.create(createTrackDto);
+  async create(@Body() createTrackDto: CreateTrackDto): Promise<Track> {
+    return new Track(await this.trackService.create(createTrackDto));
   }
 
   @Get()
-  findAll(): Promise<Track[]> {
-    return this.trackService.findAll();
+  async findAll(): Promise<Track[]> {
+    return (await this.trackService.findAll()).map(track => new Track(track));
   }
 
   @Get(':id')
-  findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<Track> {
-    return this.trackService.findOne(id);
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<Track> {
+    return new Track(await this.trackService.findOne(id));
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateTrackDto: UpdateTrackDto,
   ): Promise<Track> {
-    return this.trackService.update(id, updateTrackDto);
+    return new Track(await this.trackService.update(id, updateTrackDto));
   }
 
   @Delete(':id')

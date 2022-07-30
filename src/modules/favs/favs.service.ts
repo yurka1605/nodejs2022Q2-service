@@ -1,30 +1,53 @@
 import { PrismaService } from 'src/common/modules/prisma/prisma.service';
 import { NIL as NIL_UUID } from 'uuid';
 import { Favs } from './entities/fav.entity';
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { DataBaseEntity } from 'src/constants';
 import { Artist } from 'src/modules/artist/entities/artist.entity';
 import { Album } from '../album/entities/album.entity';
 import { Track } from '../track/entities/track.entity';
+import { Prisma } from '@prisma/client';
+import { NotFoundError } from '@prisma/client/runtime';
 
 @Injectable()
 export class FavsService {
   private defaultId: string = NIL_UUID;
 
   constructor(private readonly prisma: PrismaService) {
-    this.prisma.favs.create({
-      data: { id: this.defaultId },
-    });
+    this.init()
+      .then(data => Logger.log('Favs db initialised', 'INIT'))
+      .catch(e => Logger.error('something wrong', 'INIT'));
   }
 
   async findAll(): Promise<any> {
     try {
       return await this.prisma.favs.findUniqueOrThrow({
         where: { id: this.defaultId },
-        include: {
-          tracks: true,
-          artists: true,
-          albums: true,
+        select: {
+          tracks: {
+            select: {
+              id: true,
+              name: true,
+              artistId: true,
+              albumId: true,
+              duration: true,
+            },
+          },
+          artists: {
+            select: {
+              id: true,
+              name: true,
+              grammy: true,
+            },
+          },
+          albums: {
+            select: {
+              id: true,
+              name: true,
+              year: true,
+              artistId: true,
+            },
+          },
         },
       });
     } catch (e) {
@@ -32,30 +55,60 @@ export class FavsService {
     }
   }
 
-  // add(table: string, id: string): { message: string } {
-  //   if (this.checkEntityExist(table, id)) {
-  //     this.db.add([DataBaseEntity.FAVOURITES, table], { id });
-  //   }
-  //   return {
-  //     message: `${
-  //       table.charAt(0).toUpperCase() +
-  //       table.slice(0, table.length - 1).slice(1)
-  //     } with id ${id} successfully added to favorites`,
-  //   };
-  // }
-  // remove(table: string, id: string): void {
-  //   this.db.delete([DataBaseEntity.FAVOURITES, table], id);
-  // }
-  // private checkEntityExist(table: string, id: string): any {
-  //   const entity = this.db.get([table, id]);
-  //   if (!entity) {
-  //     throw new UnprocessableEntityException(
-  //       `${table.slice(0, table.length - 1)} with id ${id} not exist`,
-  //     );
-  //   }
-  //   return !!entity;
-  // }
-  // private getEntitiesById<T>(entities: FavsDictionary, table: string): T[] {
-  //   return Object.values(entities).map(({ id }) => this.db.get<T>([table, id]));
-  // }
+  async add(table: string, id: string): Promise<{ message: string; }> {
+    try {
+      await this.checkEntityExisting(table, id);
+
+      await this.prisma[table].update({
+        where: { id },
+        data: {
+          favsId: this.defaultId
+        }
+      });
+
+      return { message: `${table} with id ${id} successfully added to favorites` };
+    } catch (e) {
+      this.prisma.handleErrors(e);
+    }
+  }
+
+  async remove(table: string, id: string): Promise<void> {
+    try {
+      return await this.prisma[table].update({
+        where: { id },
+        data: {
+          favsId: null,
+        }
+      });
+    } catch (e) {
+      this.prisma.handleErrors(e);
+    }
+  }
+
+  private async checkEntityExisting(table: string, id: string): Promise<boolean> {
+    try {
+      return await this.prisma[table].findUniqueOrThrow({
+        where: { id },
+        select: {
+          favsId: true,
+        }
+      });
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        throw new UnprocessableEntityException(
+          `${table} with id ${id} not exist`,
+        );
+      }
+
+      this.prisma.handleErrors(e);
+    }
+  }
+
+  private async init(): Promise<void> {
+    try {
+      await this.findAll();
+    } catch (error) {
+      await this.prisma.favs.create({ data: { id: this.defaultId} });
+    }
+  }
 }

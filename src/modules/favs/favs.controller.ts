@@ -10,6 +10,7 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { FavsService } from './favs.service';
+import { DataBaseEntity } from 'src/constants';
 
 @Controller('favs')
 export class FavsController {
@@ -20,39 +21,39 @@ export class FavsController {
     return this.favsService.findAll();
   }
 
-  // @Post('track/:id')
-  // @HttpCode(HttpStatus.CREATED)
-  // addTrackToFavs(@Param('id', new ParseUUIDPipe()) id: string) {
-  //   return this.favsService.add(DataBaseEntity.TRACKS, id);
-  // }
+  @Post('track/:id')
+  @HttpCode(HttpStatus.CREATED)
+  addTrackToFavs(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.favsService.add(DataBaseEntity.TRACK, id);
+  }
 
-  // @Delete('track/:id')
-  // @HttpCode(HttpStatus.NO_CONTENT)
-  // removeTrackFromFavs(@Param('id', new ParseUUIDPipe()) id: string): void {
-  //   this.favsService.remove(DataBaseEntity.TRACKS, id);
-  // }
+  @Delete('track/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  removeTrackFromFavs(@Param('id', new ParseUUIDPipe()) id: string): void {
+    this.favsService.remove(DataBaseEntity.TRACK, id);
+  }
 
-  // @Post('album/:id')
-  // @HttpCode(HttpStatus.CREATED)
-  // addAlbumToFavs(@Param('id', new ParseUUIDPipe()) id: string) {
-  //   return this.favsService.add(DataBaseEntity.ALBUMS, id);
-  // }
+  @Post('album/:id')
+  @HttpCode(HttpStatus.CREATED)
+  addAlbumToFavs(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.favsService.add(DataBaseEntity.ALBUM, id);
+  }
 
-  // @Delete('album/:id')
-  // @HttpCode(HttpStatus.NO_CONTENT)
-  // removeAlbumFromFavs(@Param('id', new ParseUUIDPipe()) id: string): void {
-  //   this.favsService.remove(DataBaseEntity.ALBUMS, id);
-  // }
+  @Delete('album/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  removeAlbumFromFavs(@Param('id', new ParseUUIDPipe()) id: string): void {
+    this.favsService.remove(DataBaseEntity.ALBUM, id);
+  }
 
-  // @Post('artist/:id')
-  // @HttpCode(HttpStatus.CREATED)
-  // addArtistToFavs(@Param('id', new ParseUUIDPipe()) id: string) {
-  //   return this.favsService.add(DataBaseEntity.ARTISTS, id);
-  // }
+  @Post('artist/:id')
+  @HttpCode(HttpStatus.CREATED)
+  addArtistToFavs(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.favsService.add(DataBaseEntity.ARTIST, id);
+  }
 
-  // @Delete('artist/:id')
-  // @HttpCode(HttpStatus.NO_CONTENT)
-  // removeArtistFromFavs(@Param('id', new ParseUUIDPipe()) id: string): void {
-  //   this.favsService.remove(DataBaseEntity.ARTISTS, id);
-  // }
+  @Delete('artist/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  removeArtistFromFavs(@Param('id', new ParseUUIDPipe()) id: string): void {
+    this.favsService.remove(DataBaseEntity.ARTIST, id);
+  }
 }

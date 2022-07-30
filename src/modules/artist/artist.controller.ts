@@ -10,37 +10,40 @@ import {
   HttpStatus,
   HttpCode,
   Put,
+  ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('artist')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createArtistDto: CreateArtistDto): Promise<Artist> {
-    return this.artistService.create(createArtistDto);
+  async create(@Body() createArtistDto: CreateArtistDto): Promise<Artist> {
+    return new Artist(await this.artistService.create(createArtistDto));
   }
 
   @Get()
-  findAll(): Promise<Artist[]> {
-    return this.artistService.findAll();
+  async findAll(): Promise<Artist[]> {
+    return (await this.artistService.findAll()).map((artist) => new Artist(artist));
   }
 
   @Get(':id')
-  findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<Artist> {
-    return this.artistService.findOne(id);
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<Artist> {
+    return new Artist(await this.artistService.findOne(id));
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateArtistDto: UpdateArtistDto,
   ): Promise<Artist> {
-    return this.artistService.update(id, updateArtistDto);
+    return new Artist(await this.artistService.update(id, updateArtistDto));
   }
 
   @Delete(':id')
