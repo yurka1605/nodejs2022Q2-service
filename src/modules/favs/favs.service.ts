@@ -76,12 +76,9 @@ export class FavsService {
     }
   }
 
-  private async checkEntityExisting(
-    table: string,
-    id: string,
-  ): Promise<boolean> {
+  private async checkEntityExisting(table: string, id: string): Promise<void> {
     try {
-      return await this.prisma[table].findUniqueOrThrow({
+      await this.prisma[table].findUniqueOrThrow({
         where: { id },
         select: {
           favsId: true,
