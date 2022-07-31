@@ -24,7 +24,6 @@ in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 ### In Docker container
 - Install Docker
 - Run multi-container - `npm run docker:run`
-- Run prisma migrations - `npm run prisma:migrate`
 > Note: app starts on **localhost:4000**
 - Stop multi-container - `npm run docker:stop`
 
