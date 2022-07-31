@@ -6,7 +6,14 @@ import { NotFoundError } from '@prisma/client/runtime';
 
 @Injectable()
 export class FavsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {
+    this.init()
+      .then()
+      .catch((e) => {
+        console.error(e);
+        process.exit(1);
+      });
+  }
 
   async findAll(): Promise<Omit<Favs, 'id'>> {
     try {
@@ -93,5 +100,13 @@ export class FavsService {
 
       this.prisma.handleErrors(e);
     }
+  }
+
+  private async init() {
+    await this.prisma.favs.upsert({
+      where: { id: NIL_UUID },
+      update: {},
+      create: { id: NIL_UUID },
+    });
   }
 }
