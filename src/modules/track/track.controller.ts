@@ -30,7 +30,7 @@ export class TrackController {
 
   @Get()
   async findAll(): Promise<Track[]> {
-    return (await this.trackService.findAll()).map(track => new Track(track));
+    return (await this.trackService.findAll()).map((track) => new Track(track));
   }
 
   @Get(':id')

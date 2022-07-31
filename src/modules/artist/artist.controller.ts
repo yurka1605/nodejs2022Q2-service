@@ -30,7 +30,9 @@ export class ArtistController {
 
   @Get()
   async findAll(): Promise<Artist[]> {
-    return (await this.artistService.findAll()).map((artist) => new Artist(artist));
+    return (await this.artistService.findAll()).map(
+      (artist) => new Artist(artist),
+    );
   }
 
   @Get(':id')

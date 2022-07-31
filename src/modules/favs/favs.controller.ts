@@ -17,7 +17,7 @@ export class FavsController {
   constructor(private readonly favsService: FavsService) {}
 
   @Get()
-  findAll(): Promise<Favs> {
+  findAll(): Promise<Omit<Favs, 'id'>> {
     return this.favsService.findAll();
   }
 
