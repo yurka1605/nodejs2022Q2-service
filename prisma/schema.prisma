@@ -9,12 +9,13 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(uuid())
-  login     String     @unique
-  version   Int        @default(1)
-  createdAt Int
-  updatedAt Int
-  password  String
+  id           String  @id @default(uuid())
+  login        String  @unique
+  version      Int     @default(1)
+  createdAt    Int
+  updatedAt    Int
+  password     String
+  refreshToken String?
 }
 
 model Artist {
