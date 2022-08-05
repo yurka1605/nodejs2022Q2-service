@@ -51,9 +51,6 @@ CREATE TABLE "Favs" (
     CONSTRAINT "Favs_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "User_login_key" ON "User"("login");
-
 -- AddForeignKey
 ALTER TABLE "Artist" ADD CONSTRAINT "Artist_favsId_fkey" FOREIGN KEY ("favsId") REFERENCES "Favs"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 

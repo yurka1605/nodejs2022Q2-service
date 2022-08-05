@@ -52,7 +52,9 @@ export class AuthService {
     try {
       const { sub } = await this.verifyToken(token);
       const user = await this.usersService.findOne(sub);
-      const isValidToken = await compare(token, user?.refreshToken);
+      const isValidToken = user?.refreshToken
+        ? await compare(token, user?.refreshToken)
+        : false;
 
       if (!isValidToken) {
         throw new ForbiddenException('Token is invalid');

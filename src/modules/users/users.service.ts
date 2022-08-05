@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { encrypt } from 'src/common/helpers/bcrypt';
+import { compare, encrypt } from 'src/common/helpers/bcrypt';
 import { PrismaService } from 'src/common/modules/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -39,10 +39,15 @@ export class UsersService {
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     try {
       const user = await this.findOne(id);
-      if (user.password !== updateUserDto.oldPassword) {
+      const isValidPassword = await compare(
+        updateUserDto.oldPassword,
+        user.password,
+      );
+      if (!isValidPassword) {
         throw new ForbiddenException();
       }
 
+      const password = await encrypt(updateUserDto.newPassword);
       return await this.prisma.user.update({
         where: { id },
         data: {
@@ -50,7 +55,8 @@ export class UsersService {
             increment: 1,
           },
           updatedAt: Date.now(),
-          password: updateUserDto.newPassword,
+          password,
+          refreshToken: null,
         },
       });
     } catch (e) {
@@ -67,7 +73,8 @@ export class UsersService {
   }
 
   async findByLogin(login: string): Promise<User> {
-    return await this.prisma.user.findUnique({ where: { login } });
+    // TODO: Fix after check! Login must be unique!
+    return await this.prisma.user.findFirst({ where: { login } });
   }
 
   async setRefreshToken(id: string, refreshToken: string): Promise<void> {
