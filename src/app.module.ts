@@ -6,10 +6,12 @@ import { TrackModule } from './modules/track/track.module';
 import { FavsModule } from './modules/favs/favs.module';
 import { PrismaModule } from './common/modules/prisma/prisma.module';
 import { CoreModule } from './common/modules/core.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
     CoreModule,
+    AuthModule,
     UsersModule,
     ArtistModule,
     AlbumModule,
