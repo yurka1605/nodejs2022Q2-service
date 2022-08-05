@@ -10,6 +10,9 @@ export class User {
   @Exclude()
   password: string;
 
+  @Exclude()
+  refreshToken?: string | null;
+
   constructor({ createdAt, updatedAt, ...partial }: Partial<User>) {
     let now: number;
     if (!createdAt) {

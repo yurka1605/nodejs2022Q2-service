@@ -1,4 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
+import { encrypt } from 'src/common/helpers/bcrypt';
 import { PrismaService } from 'src/common/modules/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,9 +9,12 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create({ login, password: pass }: CreateUserDto): Promise<User> {
     try {
-      return await this.prisma.user.create({ data: new User(createUserDto) });
+      const password = await encrypt(pass);
+      return await this.prisma.user.create({
+        data: new User({ password, login }),
+      });
     } catch (e) {
       this.prisma.handleErrors(e);
     }
@@ -60,5 +64,16 @@ export class UsersService {
     } catch (e) {
       this.prisma.handleErrors(e);
     }
+  }
+
+  async findByLogin(login: string): Promise<User> {
+    return await this.prisma.user.findUnique({ where: { login } });
+  }
+
+  async setRefreshToken(id: string, refreshToken: string): Promise<void> {
+    await this.prisma.user.update({
+      where: { id },
+      data: { refreshToken },
+    });
   }
 }
