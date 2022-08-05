@@ -7,6 +7,8 @@ import {
   Post,
   UseGuards,
   Req,
+  ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
 import { LocalAuthGuard } from 'src/common/guards/local-auth.guard';
 import { AuthService } from './auth.service';
@@ -19,6 +21,7 @@ import { RefreshTokenDto } from './dto/refresh.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
   async signUp(@Body() authDto: AuthDto): Promise<User> {
