@@ -24,7 +24,7 @@ export class AuthService {
       throw new ConflictException(`User with login ${login} already exist!`);
     }
 
-    return await this.usersService.create({ login, password });
+    return new User(await this.usersService.create({ login, password }));
   }
 
   async validateUser({
