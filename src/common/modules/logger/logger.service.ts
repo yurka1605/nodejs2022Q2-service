@@ -1,14 +1,16 @@
-import { ConsoleLogger, Injectable, LogLevel } from '@nestjs/common';
+import { ConsoleLogger, Injectable, LogLevel, Optional } from '@nestjs/common';
 import { getLogLevels } from 'src/common/helpers/getLogLevel';
 import { WriteLogService } from 'src/common/services/write-logs.service';
 
 @Injectable()
 export class AppLogger extends ConsoleLogger {
   constructor(
-    context: string,
-    private readonly writeLogService: WriteLogService,
+    context = 'APP',
+    @Optional() private readonly writeLogService?: WriteLogService,
   ) {
-    super(context, { logLevels: getLogLevels(+process.env.LOG_LEVEL) });
+    super(context, {
+      logLevels: getLogLevels(+process.env.LOG_LEVEL),
+    });
     this.debug(`Init Logger with context ${context}`);
   }
 
@@ -38,7 +40,7 @@ export class AppLogger extends ConsoleLogger {
   }
 
   private writeLogToFile(message: string, logLvl: LogLevel): void {
-    if (this.isLevelEnabled(logLvl)) {
+    if (this.writeLogService && this.isLevelEnabled(logLvl)) {
       this.writeLogService.write(message);
     }
   }

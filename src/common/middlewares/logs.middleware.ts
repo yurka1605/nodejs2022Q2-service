@@ -1,13 +1,14 @@
 import { AppLogger } from './../modules/logger/logger.service';
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
+import { WriteLogService } from '../services/write-logs.service';
 
 @Injectable()
-class LogsMiddleware implements NestMiddleware {
+export class LogsMiddleware implements NestMiddleware {
   private readonly logger: AppLogger;
 
-  constructor() {
-    this.logger = new AppLogger('HTTP');
+  constructor(private readonly writeLogService: WriteLogService) {
+    this.logger = new AppLogger('HTTP', this.writeLogService);
   }
 
   use(request: Request, response: Response, next: NextFunction) {
@@ -33,5 +34,3 @@ class LogsMiddleware implements NestMiddleware {
     next();
   }
 }
-
-export default LogsMiddleware;

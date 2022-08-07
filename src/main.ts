@@ -14,7 +14,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
-  app.useLogger(new AppLogger('APP'));
+  app.useLogger(app.get(AppLogger));
   app.useGlobalPipes(new ValidationPipe());
 
   const document = yaml.load(

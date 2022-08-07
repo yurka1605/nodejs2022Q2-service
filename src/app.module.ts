@@ -6,14 +6,16 @@ import { TrackModule } from './modules/track/track.module';
 import { FavsModule } from './modules/favs/favs.module';
 import { PrismaModule } from './common/modules/prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
-import LogsMiddleware from './common/middlewares/logs.middleware';
+import { LogsMiddleware } from './common/middlewares/logs.middleware';
 import { APP_FILTER } from '@nestjs/core';
 import { ExceptionsLoggerFilter } from './exception.filter';
 import { WriteLogService } from './common/services/write-logs.service';
+import { LoggerModule } from './common/modules/logger/logger.module';
 
 @Module({
   imports: [
     AuthModule,
+    LoggerModule,
     UsersModule,
     ArtistModule,
     AlbumModule,
