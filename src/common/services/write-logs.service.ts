@@ -18,10 +18,12 @@ export class WriteLogService {
   }
 
   async write(message: string): Promise<void> {
-    const files = await this.getLogFiles();
-    const lastFile = this.getFilePath(files[0]);
+    let lastFile: string;
     let isFileBig = false;
+    const files = await this.getLogFiles();
+
     if (files.length) {
+      lastFile = this.getFilePath(files[0]);
       isFileBig = await this.checkFileMaxSize(lastFile);
     }
 

@@ -4,6 +4,14 @@ import { WriteLogService } from 'src/common/services/write-logs.service';
 
 @Injectable()
 export class AppLogger extends ConsoleLogger {
+  private excludeWriteToFileCtxList = [
+    'NestFactory',
+    'InstanceLoader',
+    'RouterExplorer',
+    'RoutesResolver',
+    'NestApplication',
+  ];
+
   constructor(
     context = 'APP',
     @Optional() private readonly writeLogService?: WriteLogService,
@@ -15,32 +23,46 @@ export class AppLogger extends ConsoleLogger {
   }
 
   debug(message: string, context?: string): void {
-    this.writeLogToFile(message, 'debug');
-    super.debug(message, context);
+    this.writeLogToFile(message, 'debug', context);
+    if (message) {
+      super.debug(message, context);
+    }
   }
 
   error(message: string, trace?: string, context?: string): void {
-    this.writeLogToFile(message, 'error');
-    super.error(message, trace, context);
+    this.writeLogToFile(message, 'error', context);
+    if (message) {
+      super.error(message, trace, context);
+    }
   }
 
   log(message: string, context?: string): void {
-    this.writeLogToFile(message, 'log');
-    super.log(message, context);
+    this.writeLogToFile(message, 'log', context);
+    if (message) {
+      super.log(message, context);
+    }
   }
 
   warn(message: string, context?: string): void {
-    this.writeLogToFile(message, 'warn');
-    super.warn(message, context);
+    this.writeLogToFile(message, 'warn', context);
+    if (message) {
+      super.warn(message, context);
+    }
   }
 
   verbose(message: string, context?: string): void {
-    this.writeLogToFile(message, 'verbose');
-    super.verbose(message, context);
+    this.writeLogToFile(message, 'verbose', context);
+    if (message) {
+      super.verbose(message, context);
+    }
   }
 
-  private writeLogToFile(message: string, logLvl: LogLevel): void {
-    if (this.writeLogService && this.isLevelEnabled(logLvl)) {
+  private writeLogToFile(message: string, logLvl: LogLevel, ctx: string): void {
+    if (
+      this.writeLogService &&
+      this.isLevelEnabled(logLvl) &&
+      !this.excludeWriteToFileCtxList.includes(ctx)
+    ) {
       this.writeLogService.write(message);
     }
   }
