@@ -1,14 +1,11 @@
 import { AppLogger } from './../modules/logger/logger.service';
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { WriteLogService } from '../services/write-logs.service';
 
 @Injectable()
 export class LogsMiddleware implements NestMiddleware {
-  private readonly logger: AppLogger;
-
-  constructor(private readonly writeLogService: WriteLogService) {
-    this.logger = new AppLogger('HTTP', this.writeLogService);
+  constructor(private readonly logger: AppLogger) {
+    logger.setContext('HTTP');
   }
 
   use(request: Request, response: Response, next: NextFunction) {
