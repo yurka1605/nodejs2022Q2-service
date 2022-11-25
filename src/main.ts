@@ -6,9 +6,16 @@ import { OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import * as yaml from 'js-yaml';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { AppLogger } from './common/modules/logger/logger.service';
+import { handleErrors } from './common/helpers/handle-errors';
+import { WriteLogService } from './common/services/write-logs.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  handleErrors();
+
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+
+  app.useLogger(new AppLogger('APP', app.get(WriteLogService)));
   app.useGlobalPipes(new ValidationPipe());
 
   const document = yaml.load(

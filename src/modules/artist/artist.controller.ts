@@ -1,4 +1,4 @@
-import { ArtistEntity } from './entities/artist.entity';
+import { Artist } from './entities/artist.entity';
 import {
   Controller,
   Get,
@@ -10,42 +10,47 @@ import {
   HttpStatus,
   HttpCode,
   Put,
+  ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('artist')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createArtistDto: CreateArtistDto): ArtistEntity {
-    return this.artistService.create(createArtistDto);
+  async create(@Body() createArtistDto: CreateArtistDto): Promise<Artist> {
+    return new Artist(await this.artistService.create(createArtistDto));
   }
 
   @Get()
-  findAll(): ArtistEntity[] {
-    return this.artistService.findAll();
+  async findAll(): Promise<Artist[]> {
+    return (await this.artistService.findAll()).map(
+      (artist) => new Artist(artist),
+    );
   }
 
   @Get(':id')
-  findOne(@Param('id', new ParseUUIDPipe()) id: string): ArtistEntity {
-    return this.artistService.findOne(id);
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<Artist> {
+    return new Artist(await this.artistService.findOne(id));
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateArtistDto: UpdateArtistDto,
-  ): ArtistEntity {
-    return this.artistService.update(id, updateArtistDto);
+  ): Promise<Artist> {
+    return new Artist(await this.artistService.update(id, updateArtistDto));
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', new ParseUUIDPipe()) id: string): ArtistEntity {
+  remove(@Param('id', new ParseUUIDPipe()) id: string): Promise<Artist> {
     return this.artistService.remove(id);
   }
 }

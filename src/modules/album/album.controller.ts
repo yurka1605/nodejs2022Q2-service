@@ -9,43 +9,49 @@ import {
   HttpCode,
   ParseUUIDPipe,
   Put,
+  ClassSerializerInterceptor,
+  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { AlbumEntity } from './entities/album.entity';
+import { Album } from './entities/album.entity';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('album')
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createAlbumDto: CreateAlbumDto): AlbumEntity {
-    return this.albumService.create(createAlbumDto);
+  async create(@Body() createAlbumDto: CreateAlbumDto): Promise<Album> {
+    return new Album(await this.albumService.create(createAlbumDto));
   }
 
   @Get()
-  findAll(): AlbumEntity[] {
-    return this.albumService.findAll();
+  async findAll(): Promise<Album[]> {
+    return (await this.albumService.findAll()).map((album) => new Album(album));
   }
 
   @Get(':id')
-  findOne(@Param('id', new ParseUUIDPipe()) id: string): AlbumEntity {
-    return this.albumService.findOne(id);
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<Album> {
+    return new Album(await this.albumService.findOne(id));
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateAlbumDto: UpdateAlbumDto,
-  ): AlbumEntity {
-    return this.albumService.update(id, updateAlbumDto);
+  ): Promise<Album> {
+    return new Album(await this.albumService.update(id, updateAlbumDto));
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', new ParseUUIDPipe()) id: string): AlbumEntity {
+  remove(@Param('id', new ParseUUIDPipe()) id: string): Promise<Album> {
     return this.albumService.remove(id);
   }
 }

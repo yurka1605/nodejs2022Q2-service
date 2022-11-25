@@ -1,4 +1,4 @@
-import { UserEntity } from './entities/user.entity';
+import { User } from './entities/user.entity';
 import {
   Controller,
   Get,
@@ -12,11 +12,14 @@ import {
   ParseUUIDPipe,
   ClassSerializerInterceptor,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UsersController {
@@ -24,31 +27,31 @@ export class UsersController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createUserDto: CreateUserDto): UserEntity {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return new User(await this.usersService.create(createUserDto));
   }
 
   @Get()
-  findAll(): UserEntity[] {
-    return this.usersService.findAll();
+  async findAll(): Promise<User[]> {
+    return (await this.usersService.findAll()).map((user) => new User(user));
   }
 
   @Get(':id')
-  findOne(@Param('id', new ParseUUIDPipe()) id: string): UserEntity {
-    return this.usersService.findOne(id);
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<User> {
+    return new User(await this.usersService.findOne(id));
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateUserDto: UpdateUserDto,
-  ): UserEntity {
-    return this.usersService.update(id, updateUserDto);
+  ): Promise<User> {
+    return new User(await this.usersService.update(id, updateUserDto));
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', new ParseUUIDPipe()) id: string): UserEntity {
+  remove(@Param('id', new ParseUUIDPipe()) id: string): Promise<User> {
     return this.usersService.remove(id);
   }
 }

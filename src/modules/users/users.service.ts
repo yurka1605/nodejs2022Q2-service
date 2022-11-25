@@ -1,56 +1,86 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { DataBaseEntity } from 'src/constants';
-import { InMemoryDBService } from 'src/in-memory-db';
+import { ForbiddenException, Injectable } from '@nestjs/common';
+import { compare, encrypt } from 'src/common/helpers/bcrypt';
+import { PrismaService } from 'src/common/modules/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserEntity } from './entities/user.entity';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(private db: InMemoryDBService) {}
+  constructor(private prisma: PrismaService) {}
 
-  create(createUserDto: CreateUserDto): UserEntity {
-    return this.db.add<UserEntity>(
-      [DataBaseEntity.USERS],
-      new UserEntity(createUserDto),
-    );
-  }
-
-  findAll(): UserEntity[] {
-    return Object.values(
-      this.db.get<{ [key: string]: UserEntity }>([DataBaseEntity.USERS]),
-    );
-  }
-
-  findOne(id: string): UserEntity {
-    const user = this.db.get<UserEntity>([DataBaseEntity.USERS, id]);
-    if (!user) throw new NotFoundException();
-    return user;
-  }
-
-  update(id: string, updateUserDto: UpdateUserDto): UserEntity {
-    const user = this.findOne(id);
-
-    if (!user) throw new NotFoundException();
-
-    if (user.password !== updateUserDto.oldPassword) {
-      throw new ForbiddenException();
+  async create({ login, password: pass }: CreateUserDto): Promise<User> {
+    try {
+      const password = await encrypt(pass);
+      return await this.prisma.user.create({
+        data: new User({ password, login }),
+      });
+    } catch (e) {
+      this.prisma.handleErrors(e);
     }
-
-    return this.db.update<UserEntity>([DataBaseEntity.USERS, id], {
-      password: updateUserDto.newPassword,
-      version: user.version + 1,
-      updatedAt: Date.now(),
-    });
   }
 
-  remove(id: string): UserEntity {
-    const deletedUser = this.db.delete<UserEntity>([DataBaseEntity.USERS], id);
-    if (!deletedUser) throw new NotFoundException();
-    return deletedUser;
+  async findAll(): Promise<User[]> {
+    try {
+      return await this.prisma.user.findMany();
+    } catch (e) {
+      this.prisma.handleErrors(e);
+    }
+  }
+
+  async findOne(id: string): Promise<User> {
+    try {
+      return await this.prisma.user.findUniqueOrThrow({ where: { id } });
+    } catch (e) {
+      this.prisma.handleErrors(e);
+    }
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    try {
+      const user = await this.findOne(id);
+      const isValidPassword = await compare(
+        updateUserDto.oldPassword,
+        user.password,
+      );
+      if (!isValidPassword) {
+        throw new ForbiddenException();
+      }
+
+      const password = await encrypt(updateUserDto.newPassword);
+      return await this.prisma.user.update({
+        where: { id },
+        data: {
+          version: {
+            increment: 1,
+          },
+          updatedAt: Date.now(),
+          password,
+          refreshToken: null,
+        },
+      });
+    } catch (e) {
+      this.prisma.handleErrors(e);
+    }
+  }
+
+  async remove(id: string): Promise<User> {
+    try {
+      return await this.prisma.user.delete({ where: { id } });
+    } catch (e) {
+      this.prisma.handleErrors(e);
+    }
+  }
+
+  async findByLogin(login: string): Promise<User> {
+    // TODO: Fix after check! Login must be unique!
+    return await this.prisma.user.findFirst({ where: { login } });
+  }
+
+  async setRefreshToken(id: string, refreshToken: string): Promise<void> {
+    await this.prisma.user.update({
+      where: { id },
+      data: { refreshToken },
+    });
   }
 }

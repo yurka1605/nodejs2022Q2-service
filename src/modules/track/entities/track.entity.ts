@@ -1,16 +1,16 @@
-import { v4 as uuidv4 } from 'uuid';
+import { Exclude } from 'class-transformer';
 
-export class TrackEntity {
+export class Track {
   id: string;
   name: string;
+  duration: number;
   artistId?: string | null;
   albumId?: string | null;
-  duration: number;
 
-  constructor(partial: Partial<TrackEntity>) {
-    Object.assign(this, {
-      id: uuidv4(),
-      ...partial,
-    });
+  @Exclude()
+  favsId?: string | null;
+
+  constructor(partial: Partial<Track>) {
+    Object.assign(this, partial);
   }
 }

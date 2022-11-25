@@ -1,9 +1,10 @@
-import { AlbumEntity } from 'src/modules/album/entities/album.entity';
-import { ArtistEntity } from 'src/modules/artist/entities/artist.entity';
-import { TrackEntity } from 'src/modules/track/entities/track.entity';
+import { Album } from 'src/modules/album/entities/album.entity';
+import { Artist } from 'src/modules/artist/entities/artist.entity';
+import { Track } from 'src/modules/track/entities/track.entity';
 
-export interface FavsEntity {
-  artists: ArtistEntity[];
-  albums: AlbumEntity[];
-  tracks: TrackEntity[];
+export interface Favs {
+  id: string;
+  artists: Artist[];
+  albums: Album[];
+  tracks: Track[];
 }

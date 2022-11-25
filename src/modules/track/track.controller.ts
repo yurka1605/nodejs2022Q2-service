@@ -9,38 +9,44 @@ import {
   HttpCode,
   ParseUUIDPipe,
   Put,
+  ClassSerializerInterceptor,
+  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { TrackEntity } from './entities/track.entity';
+import { Track } from './entities/track.entity';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('track')
 export class TrackController {
   constructor(private readonly trackService: TrackService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createTrackDto: CreateTrackDto): TrackEntity {
-    return this.trackService.create(createTrackDto);
+  async create(@Body() createTrackDto: CreateTrackDto): Promise<Track> {
+    return new Track(await this.trackService.create(createTrackDto));
   }
 
   @Get()
-  findAll(): TrackEntity[] {
-    return this.trackService.findAll();
+  async findAll(): Promise<Track[]> {
+    return (await this.trackService.findAll()).map((track) => new Track(track));
   }
 
   @Get(':id')
-  findOne(@Param('id', new ParseUUIDPipe()) id: string): TrackEntity {
-    return this.trackService.findOne(id);
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<Track> {
+    return new Track(await this.trackService.findOne(id));
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateTrackDto: UpdateTrackDto,
-  ): TrackEntity {
-    return this.trackService.update(id, updateTrackDto);
+  ): Promise<Track> {
+    return new Track(await this.trackService.update(id, updateTrackDto));
   }
 
   @Delete(':id')

@@ -9,7 +9,7 @@ servers:
 
 components:
   schemas:
-    UserEntity:
+    User:
       type: object
       properties:
         id:
@@ -31,7 +31,7 @@ components:
         - id
         - login
         - password
-    ArtistEntity:
+    Artist:
       type: object
       properties:
         id:
@@ -46,7 +46,7 @@ components:
       required:
         - id
         - name
-    AlbumEntity:
+    Album:
       type: object
       properties:
         id:
@@ -65,7 +65,7 @@ components:
       required:
         - id
         - name
-    TrackEntity:
+    Track:
       type: object
       properties:
         id:
@@ -90,21 +90,21 @@ components:
         - id
         - name
         - duration
-    FavsEntity:
+    Favs:
       type: object
       properties:
         artists:
           type: array
           items:
-            $ref: '#/components/schemas/ArtistEntity'
+            $ref: '#/components/schemas/Artist'
         albums:
           type: array
           items:
-            $ref: '#/components/schemas/AlbumEntity'
+            $ref: '#/components/schemas/Album'
         tracks:
           type: array
           items:
-            $ref: '#/components/schemas/TrackEntity'
+            $ref: '#/components/schemas/Track'
 
 paths:
   /user:
@@ -121,7 +121,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserEntity'
+                  $ref: '#/components/schemas/User'
     post:
       tags:
         - Users
@@ -150,7 +150,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserEntity'
+                $ref: '#/components/schemas/User'
         400:
           description: Bad request. body does not contain required fields
   /user/{id}:
@@ -171,7 +171,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserEntity'
+                $ref: '#/components/schemas/User'
         400:
           description: Bad request. userId is invalid (not uuid)
 
@@ -258,7 +258,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/TrackEntity'
+                  $ref: '#/components/schemas/Track'
 
     post:
       tags:
@@ -292,7 +292,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TrackEntity'
+                $ref: '#/components/schemas/Track'
         400:
           description: Bad request. body does not contain required fields
   /track/{id}:
@@ -314,7 +314,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TrackEntity'
+                $ref: '#/components/schemas/Track'
         400:
           description: Bad request. trackId is invalid (not uuid)
 
@@ -411,7 +411,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AlbumEntity'
+                  $ref: '#/components/schemas/Album'
 
     post:
       tags:
@@ -443,7 +443,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AlbumEntity'
+                $ref: '#/components/schemas/Album'
         400:
           description: Bad request. body does not contain required fields
   /album/{id}:
@@ -465,7 +465,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AlbumEntity'
+                $ref: '#/components/schemas/Album'
         400:
           description: Bad request. albumId is invalid (not uuid)
 
@@ -501,7 +501,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AlbumEntity'
+                $ref: '#/components/schemas/Album'
         400:
           description: Bad request. albumId is invalid (not uuid)
 
@@ -535,7 +535,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ArtistEntity'
+                  $ref: '#/components/schemas/Artist'
 
     post:
       tags:
@@ -562,7 +562,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArtistEntity'
+                $ref: '#/components/schemas/Artist'
         400:
           description: Bad request. body does not contain required fields
   /artist/{id}:
@@ -584,7 +584,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArtistEntity'
+                $ref: '#/components/schemas/Artist'
         400:
           description: Bad request. artistId is invalid (not uuid)
 
@@ -615,7 +615,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArtistEntity'
+                $ref: '#/components/schemas/Artist'
         400:
           description: Bad request. artistId is invalid (not uuid)
 
@@ -647,7 +647,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FavsEntity'
+                $ref: '#/components/schemas/Favs'
   /favs/track/{id}:
     parameters:
       - name: id

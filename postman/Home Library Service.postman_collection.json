@@ -258,7 +258,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"grammy\": true\r\n}"
+							"raw": "{\r\n    \"name\": \"new name\",\r\n    \"grammy\": true\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/artist/{{artist_id}}",
