@@ -1,0 +1,808 @@
+{
+	"info": {
+		"_postman_id": "c01cfbde-6924-4949-a055-21c9b553b7ec",
+		"name": "Home Library Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9479995"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/user/{{user_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resp = JSON.parse(responseBody);\r",
+									"\r",
+									"if(resp?.id){\r",
+									"    postman.setEnvironmentVariable(\"user_id\", resp?.id);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"{{$randomEmail}}\",\r\n    \"password\": \"qwerty123\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\": \"qwerty123\",\r\n    \"newPassword\": \"{{$randomPassword}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/user/{{user_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/user/{{user_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Artists",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/artist",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"artist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/artist/{{artist_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"artist",
+								"{{artist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resp = JSON.parse(responseBody);\r",
+									"\r",
+									"if(resp?.id) {\r",
+									"    postman.setEnvironmentVariable(\"artist_id\", resp?.id);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"grammy\": false\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/artist",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"artist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"new name\",\r\n    \"grammy\": true\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/artist/{{artist_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"artist",
+								"{{artist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/artist/{{artist_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"artist",
+								"{{artist_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Albums",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/album",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"album"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/album/{{album_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"album",
+								"{{album_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resp = JSON.parse(responseBody);\r",
+									"\r",
+									"if(resp?.id){\r",
+									"    postman.setEnvironmentVariable(\"album_id\", resp?.id);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFirstName}}\",\r\n    \"year\": 2022,\r\n    \"artistId\": \"{{artist_id}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/album",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"album"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFirstName}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/album/{{album_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"album",
+								"{{album_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/album/{{album_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"album",
+								"{{album_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tracks",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/track",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"track"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/track/{{track_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"track",
+								"{{track_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resp = JSON.parse(responseBody);\r",
+									"\r",
+									"if(resp?.id){\r",
+									"    postman.setEnvironmentVariable(\"track_id\", resp?.id);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFirstName}}\",\r\n    \"duration\": 320\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/track",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"track"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFirstName}}\",\r\n    \"artistId\": \"7b687b43-1bef-4313-a47a-050e935b8673\",\r\n    \"albumId\": \"0b59d780-98c3-4873-872c-5801057e7d88\",\r\n    \"duration\": 132\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/track/{{track_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"track",
+								"{{track_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/track/{{track_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"track",
+								"{{track_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favs",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/favs",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"favs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addTrackToFavourites",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/favs/track/{{track_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"favs",
+								"track",
+								"{{track_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addAlbumToFavourites",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/favs/album/{{album_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"favs",
+								"album",
+								"{{album_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addArtistToFavourites",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/favs/artist/{{artist_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"favs",
+								"artist",
+								"{{artist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addTrackFromFavourites",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/favs/track/{{track_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"favs",
+								"track",
+								"{{track_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addAlbumFromFavourites",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/favs/album/{{album_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"favs",
+								"album",
+								"{{album_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addArtistFromFavourites",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/favs/artist/{{artist_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"favs",
+								"artist",
+								"{{artist_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
